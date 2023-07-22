@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "719020103436",
+    "project_id": "jetareader-18594",
+    "storage_bucket": "jetareader-18594.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:719020103436:android:a18ea79573c87d84ce9b29",
+        "android_client_info": {
+          "package_name": "com.example.areader"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "719020103436-f13l7agdslg1e2q4v6joongfv097qlj7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD3LjyqR23ePuWyoRxlNWuP60lnDoq3Bbs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "719020103436-f13l7agdslg1e2q4v6joongfv097qlj7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
