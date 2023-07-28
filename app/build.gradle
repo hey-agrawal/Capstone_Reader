@@ -58,7 +58,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore-ktx'
 
     //Dagger - Hilt
-    implementation 'com.google.dagger:hilt-android:2.42'
+    implementation 'com.google.dagger:hilt-android:2.42' //
 
    //implementation "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
 // Dagger - Hilt
