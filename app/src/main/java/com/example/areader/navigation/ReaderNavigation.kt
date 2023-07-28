@@ -19,6 +19,5 @@ fun ReaderNavigation () {
         composable(ReaderScreens.ReaderHomeScreen.name){
             Home(navController = navController)
         }
-
     }
 }
