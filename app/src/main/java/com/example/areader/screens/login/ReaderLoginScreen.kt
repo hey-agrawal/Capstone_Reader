@@ -54,10 +54,14 @@ import com.example.areader.R
 import com.example.areader.components.EmailInput
 import com.example.areader.components.PasswordInput
 import com.example.areader.components.ReaderLogo
+import com.example.areader.navigation.ReaderScreens
 import kotlin.math.sin
 
 @Composable
-fun ReaderLoginScreen(navController: NavController){
+fun ReaderLoginScreen(
+    navController: NavController,
+    viewModel: LoginScreenViewModel = androidx.lifecycle.viewmodel.compose.viewModel(),
+){
     val showLoginForm = rememberSaveable{ mutableStateOf(true) }
 
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -67,6 +71,9 @@ fun ReaderLoginScreen(navController: NavController){
             ReaderLogo()
             if(showLoginForm.value) UserForm(loading = false, isCreateAccount = false){email, password ->
                 //TODO FB Login
+                viewModel.signInWithEmailAndPassword(email,password){
+                    navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+                }
             }
             else {
                 UserForm(loading = false, isCreateAccount = true ){
