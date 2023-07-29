@@ -9,10 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Button
+import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
@@ -80,19 +84,50 @@ fun UserForm(
         .verticalScroll(rememberScrollState())
 
     Column(modifier, horizontalAlignment = Alignment.CenterHorizontally) {
-            EmailInput(emailState = email, enabled = !loading, onAction = KeyboardActions { passwordFocusRequest.requestFocus() })
-    }
-    PasswordInput(
-        modifier = Modifier.focusRequester(passwordFocusRequest),
-        passwordState = password,
-        labelId = "Password",
-        enabled = !loading,
-        passVisibility = passVisibility,
-        onAction = KeyboardActions{
-            if (!valid) return@KeyboardActions
-            onDone(email.value.trim(), password.value.trim())
+        EmailInput(
+            emailState = email,
+            enabled = !loading,
+            onAction = KeyboardActions { passwordFocusRequest.requestFocus() },
+        )
 
-        }
-    )
+        PasswordInput(
+            modifier = Modifier.focusRequester(passwordFocusRequest),
+            passwordState = password,
+            labelId = "Password",
+            enabled = !loading,
+            passVisibility = passVisibility,
+            onAction = KeyboardActions {
+                if (!valid) return@KeyboardActions
+                onDone(email.value.trim(), password.value.trim())
+
+            }
+        )
+            SubmitButton(
+                textId = if (isCreateAccount) "Create Account" else "Login",
+                loading = loading,
+                validInputs = valid
+
+            ){
+                onDone(email.value.trim(), password.value.trim())
+            }
+    }
+}
+
+@Composable
+fun SubmitButton(textId: String,
+                 loading: Boolean,
+                 validInputs: Boolean,
+                 onClick: () -> Unit) {
+    Button(onClick = onClick,
+            modifier = Modifier
+                .padding(3.dp)
+                .fillMaxWidth(),
+        enabled = !loading && validInputs,
+        shape = CircleShape
+        ) {
+        if(loading) CircularProgressIndicator(modifier = Modifier.size(25.dp))
+        else Text(text = textId, modifier = Modifier.padding(5.dp))
+    }
+
 }
 
