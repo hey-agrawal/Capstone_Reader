@@ -3,10 +3,13 @@ package com.example.areader.screens.home
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -17,6 +20,7 @@ import androidx.compose.material.icons.Icons
 
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Logout
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,7 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.areader.R
+import com.example.areader.navigation.ReaderScreens
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.firebase.auth.FirebaseAuth
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -65,14 +71,25 @@ fun ReaderAppBar(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(12.dp))
                                 .scale(0.9f))
-//
                          }
                          Text(text = title,
                          color = Color.Red.copy(alpha = 0.7f),
                              style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp))
+                         Spacer(modifier = Modifier.width(150.dp))
                      }
    },
-       actions = {},
+       actions = {
+                 IconButton(onClick = {
+                     FirebaseAuth.getInstance().signOut().run {
+                         navController.navigate(ReaderScreens.LoginScreen.name)
+                     }
+                 }) {
+
+                    Icon(imageVector = Icons.Filled.Logout,
+                        contentDescription = "Logout" )
+
+                 }
+       },
        backgroundColor = Color.Transparent,
        elevation = 0.dp)
 
