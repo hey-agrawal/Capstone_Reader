@@ -78,6 +78,9 @@ dependencies {
     // Coil
     implementation("io.coil-kt:coil-compose:1.4.0")
 
+    
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+
 
 
 //    implementation 'androidx.core:core-ktx:1.7.0'
