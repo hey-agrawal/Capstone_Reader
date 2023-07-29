@@ -27,41 +27,55 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.areader.components.ReaderLogo
 import com.example.areader.navigation.ReaderScreens
+import com.google.firebase.auth.FirebaseAuth
 import kotlinx.coroutines.delay
 
 
 @Composable
-fun ReaderSplashScreen(navController: NavController){
+fun ReaderSplashScreen(navController: NavController) {
 
     val scale = remember {
         Animatable(0f)
     }
-    LaunchedEffect(key1 = true ){
-        scale.animateTo(targetValue = 0.9f,
-        animationSpec = tween(durationMillis = 800,
-        easing = {
-            OvershootInterpolator(8f)
-                .getInterpolation(it)
-        }))
+    LaunchedEffect(key1 = true) {
+        scale.animateTo(
+            targetValue = 0.9f,
+            animationSpec = tween(durationMillis = 800,
+                easing = {
+                    OvershootInterpolator(8f)
+                        .getInterpolation(it)
+                })
+        )
         delay(2000L)
-        navController.navigate(ReaderScreens.LoginScreen.name)
+
+        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {
+
+            navController.navigate(ReaderScreens.LoginScreen.name)
+        } else {
+            navController.navigate(ReaderScreens.ReaderHomeScreen.name)
+        }
     }
-  Surface(modifier = Modifier
-      .padding(15.dp)
-      .size(330.dp)
-      .scale(scale.value),
+    Surface(
+        modifier = Modifier
+            .padding(15.dp)
+            .size(330.dp)
+            .scale(scale.value),
         shape = CircleShape,
         color = Color.White,
-        border = BorderStroke(width = 2.dp, color = Color.LightGray)) {
-      Column(modifier = Modifier.padding(1.dp),
-      horizontalAlignment = Alignment.CenterHorizontally,
-      verticalArrangement = Arrangement.Center) {
-          ReaderLogo()
-          Spacer(modifier = Modifier.height(15.dp))
-          Text(text = "\"Read. Change. Yourself\"",
-              style = MaterialTheme.typography.h5,
-              color = Color.LightGray)
-      }
-  }
+        border = BorderStroke(width = 2.dp, color = Color.LightGray)
+    ) {
+        Column(
+            modifier = Modifier.padding(1.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            ReaderLogo()
+            Spacer(modifier = Modifier.height(15.dp))
+            Text(
+                text = "\"Read. Change. Yourself\"",
+                style = MaterialTheme.typography.h5,
+                color = Color.LightGray
+            )
+        }
+    }
 }
-
