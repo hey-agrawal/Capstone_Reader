@@ -48,7 +48,7 @@ fun ReaderSplashScreen(navController: NavController) {
         )
         delay(2000L)
 
-//        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {//
+//        if (FirebaseAuth.getInstance().currentUser?.email.isNullOrEmpty()) {
 //
 //            navController.navigate(ReaderScreens.LoginScreen.name)
 //        } else {
