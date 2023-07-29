@@ -65,7 +65,7 @@ fun ReaderAppBar(
                             modifier = Modifier
                                 .clip(RoundedCornerShape(12.dp))
                                 .scale(0.9f))
-
+//
                          }
                          Text(text = title,
                          color = Color.Red.copy(alpha = 0.7f),
