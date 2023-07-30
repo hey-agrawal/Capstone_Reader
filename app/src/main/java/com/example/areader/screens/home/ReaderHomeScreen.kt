@@ -2,14 +2,18 @@ package com.example.areader.screens.home
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
+import androidx.compose.material.LocalContentAlpha
 
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
@@ -28,20 +32,26 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.areader.R
+import com.example.areader.model.MBook
 import com.example.areader.navigation.ReaderScreens
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
+@Preview
 @Composable
-fun Home(navController: NavController) {
+fun Home(navController: NavController = NavController(LocalContext.current)) {
     Scaffold(topBar = {
  ReaderAppBar(title = "A.Reader", navController = navController )
     },
@@ -50,10 +60,19 @@ fun Home(navController: NavController) {
         }
     ) {
         Surface(modifier = Modifier.fillMaxSize()) {
-
+            HomeContent(navController)
         }
     }
 
+}
+@Composable
+fun HomeContent(navController: NavController){
+    Column(Modifier.padding(2.dp),
+    verticalArrangement = Arrangement.SpaceEvenly) {
+        Row(modifier = Modifier.align(alignment = Alignment.Start)) {
+            TitleSection(label = "Your Reading \n" + " activity right now...")
+        }
+    }
 }
 
 
@@ -86,7 +105,9 @@ fun ReaderAppBar(
                  }) {
 
                     Icon(imageVector = Icons.Filled.Logout,
-                        contentDescription = "Logout" )
+                        contentDescription = "Logout",
+                   // tint = Color.Green.copy(alpha = 0.4f)
+                  )
 
                  }
        },
@@ -94,7 +115,26 @@ fun ReaderAppBar(
        elevation = 0.dp)
 
 }
+@Composable
+fun TitleSection(modifier: Modifier = Modifier, label: String){
+    Surface(modifier = modifier.padding(start = 5.dp, top = 1.dp)) {
+        Column{
+            Text(
+                text = label,
+                fontSize = 19.sp,
+                fontStyle = FontStyle.Normal,
+                textAlign = TextAlign.Left
+            )
+        }
+    }
+}
 
+
+
+@Composable
+fun ReadingRightNowArea(books: List<MBook>, navController: NavController){
+
+}
 @Composable
 fun FABContent(onTap: () -> Unit) {
  FloatingActionButton(onClick = { }, shape = RoundedCornerShape(50.dp), backgroundColor = Color(0xFF92CBDF)) {
