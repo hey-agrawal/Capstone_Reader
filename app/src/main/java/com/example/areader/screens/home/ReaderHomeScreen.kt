@@ -163,7 +163,7 @@ onPressDetails: (String) -> Unit={}){
         }
     }
 }
-
+//
 @Composable
 fun BookRating(score: Double = 4.5) {
 Surface(modifier = Modifier
