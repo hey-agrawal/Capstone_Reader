@@ -33,6 +33,9 @@ import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.StarBorder
+import androidx.compose.material.icons.rounded.Favorite
+import androidx.compose.material.icons.rounded.FavoriteBorder
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -141,12 +144,41 @@ onPressDetails: (String) -> Unit={}){
                     .width(100.dp)
                     .padding(4.dp))
                 Spacer(modifier = Modifier.width(50.dp))
-                Column() {
+                Column(modifier = Modifier.padding(top = 25.dp),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally) {
+                            Icon(imageVector = Icons.Rounded.FavoriteBorder, contentDescription = "Fav Icon",
+                            modifier = Modifier.padding(bottom = 1.dp))
 
+
+                    BookRating(score = 3.5)
                 }
             }
+            Text(text = "Book Title", modifier = Modifier.padding(4.dp),
+            fontWeight = FontWeight.Bold,
+            maxLines = 2,
+            overflow = TextOverflow.Ellipsis)
+            Text(text = "Author All...", modifier = Modifier.padding(4.dp),
+            style = MaterialTheme.typography.caption)
         }
     }
+}
+
+@Composable
+fun BookRating(score: Double = 4.5) {
+Surface(modifier = Modifier
+    .height(70.dp)
+    .padding(4.dp),
+shape = RoundedCornerShape(56.dp),
+elevation = 6.dp,
+color = Color.White
+) {
+        Column(modifier = Modifier.padding(4.dp)) {
+            Icon(imageVector = Icons.Filled.StarBorder, contentDescription = "Star",
+                modifier = Modifier.padding(3.dp))
+            Text(text = score.toString(), style = MaterialTheme.typography.subtitle1)
+        }
+}
 }
 
 
