@@ -1,6 +1,7 @@
 package com.example.areader.screens.home
 
 import android.annotation.SuppressLint
+import android.telecom.Call.Details
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,10 +10,12 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Card
 import androidx.compose.material.Divider
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
@@ -48,7 +51,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import coil.compose.rememberImagePainter
 import com.example.areader.R
+import com.example.areader.components.FABContent
+import com.example.areader.components.ReaderAppBar
+import com.example.areader.components.TitleSection
 import com.example.areader.model.MBook
 import com.example.areader.navigation.ReaderScreens
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -79,7 +86,7 @@ fun HomeContent(navController: NavController){
         FirebaseAuth.getInstance().currentUser?.email?.split("@")?.get(0)
     else "N/A"
     Column(Modifier.padding(2.dp),
-    verticalArrangement = Arrangement.SpaceEvenly) {
+    verticalArrangement = Arrangement.Top) {
         Row(modifier = Modifier.align(alignment = Alignment.Start)) {
             TitleSection(label = "Your Reading \n" + " activity right now...")
             Spacer(modifier = Modifier.fillMaxWidth(0.7f))
@@ -107,69 +114,43 @@ fun HomeContent(navController: NavController){
     }
 }
 
-
+@Preview
 @Composable
-fun ReaderAppBar(
-    title: String,
-    showProfile: Boolean = true,
-    navController: NavController
-){
-   TopAppBar(title = {
-                     Row(verticalAlignment = Alignment.CenterVertically){
-                         if (showProfile){
-                            Icon(imageVector = Icons.Default.Favorite,
-                                contentDescription = "Logo Icon",
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(12.dp))
-                                .scale(0.9f))
-                         }
-                         Text(text = title,
-                         color = Color.Red.copy(alpha = 0.7f),
-                             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 20.sp))
-                         Spacer(modifier = Modifier.width(150.dp))
-                     }
-   },
-       actions = {
-                 IconButton(onClick = {
-                     FirebaseAuth.getInstance().signOut().run {
-                         navController.navigate(ReaderScreens.LoginScreen.name)
-                     }
-                 }) {
+fun ListCard(book: MBook = MBook("asdf","Running","Me and you", "hello world"),
+onPressDetails: (String) -> Unit={}){
+    val context = LocalContext.current
+    val resources = context.resources
+    val displayMetrics = resources.displayMetrics
+    val screenWidth = displayMetrics.widthPixels / displayMetrics.density
+    val spacing = 10.dp
+    Card(shape = RoundedCornerShape(29.dp),
+    backgroundColor = Color.White,
+    elevation = 6.dp,
+        modifier = Modifier
+            .padding(16.dp)
+            .height(242.dp)
+            .width(202.dp)
+            .clickable { onPressDetails.invoke(book.title.toString()) })
+    {
+        Column(modifier = Modifier.width(screenWidth.dp - (spacing * 2)),
+        horizontalAlignment = Alignment.Start) {
+            Row(horizontalArrangement = Arrangement.Center) {
+                Image(painter = rememberImagePainter(data = ""), contentDescription = "book image",
+                modifier = Modifier
+                    .height(140.dp)
+                    .width(100.dp)
+                    .padding(4.dp))
+                Spacer(modifier = Modifier.width(50.dp))
+                Column() {
 
-                    Icon(imageVector = Icons.Filled.Logout,
-                        contentDescription = "Logout",
-                   // tint = Color.Green.copy(alpha = 0.4f)
-                  )
-
-                 }
-       },
-       backgroundColor = Color.Transparent,
-       elevation = 0.dp)
-
-}
-@Composable
-fun TitleSection(modifier: Modifier = Modifier, label: String){
-    Surface(modifier = modifier.padding(start = 5.dp, top = 1.dp)) {
-        Column{
-            Text(
-                text = label,
-                fontSize = 19.sp,
-                fontStyle = FontStyle.Normal,
-                textAlign = TextAlign.Left
-            )
+                }
+            }
         }
     }
 }
 
 
-
 @Composable
 fun ReadingRightNowArea(books: List<MBook>, navController: NavController){
 
-}
-@Composable
-fun FABContent(onTap: () -> Unit) {
- FloatingActionButton(onClick = { }, shape = RoundedCornerShape(50.dp), backgroundColor = Color(0xFF92CBDF)) {
-     Icon(imageVector = Icons.Default.Add , contentDescription = "Add a book", tint = Color.White)
- }
 }
