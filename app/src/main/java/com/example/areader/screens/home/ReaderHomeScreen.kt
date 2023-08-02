@@ -140,7 +140,8 @@ onPressDetails: (String) -> Unit={}){
         Column(modifier = Modifier.width(screenWidth.dp - (spacing * 2)),
         horizontalAlignment = Alignment.Start) {
             Row(horizontalArrangement = Arrangement.Center) {
-                Image(painter = rememberImagePainter(data = ""), contentDescription = "book image",
+                Image(painter = rememberImagePainter(data = "http://books.google.com/books/content?\n" +
+                        "id=JGH0DwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api"), contentDescription = "book image",
                 modifier = Modifier
                     .height(140.dp)
                     .width(100.dp)
