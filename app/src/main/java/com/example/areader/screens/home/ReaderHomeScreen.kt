@@ -2,8 +2,10 @@ package com.example.areader.screens.home
 
 import android.annotation.SuppressLint
 import android.telecom.Call.Details
+import android.widget.HorizontalScrollView
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,6 +17,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
 import androidx.compose.material.Divider
@@ -57,7 +60,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import coil.compose.rememberImagePainter
 import com.example.areader.R
+import com.example.areader.components.BookRating
 import com.example.areader.components.FABContent
+import com.example.areader.components.ListCard
 import com.example.areader.components.ReaderAppBar
 import com.example.areader.components.TitleSection
 import com.example.areader.model.MBook
@@ -84,6 +89,17 @@ fun Home(navController: NavController = NavController(LocalContext.current)) {
 }
 @Composable
 fun HomeContent(navController: NavController){
+    val listOfBooks = listOf(
+        MBook(id = "dadfa", title = "Hello again", authors = "All of us", notes = null),
+        MBook(id = "dadfa", title = "Hello ", authors = "All of us", notes = null),
+        MBook(id = "dadfa", title = "again", authors = "All of us", notes = null),
+        MBook(id = "dadfa", title = "Hello again", authors = "All of us", notes = null),
+        MBook(id = "dadfa", title = "Hello again", authors = "All of us", notes = null)
+
+
+
+
+        )
    //me @gmail.com
     val email = FirebaseAuth.getInstance().currentUser?.email
     val currentUserName = if(!email.isNullOrEmpty())
@@ -113,105 +129,38 @@ fun HomeContent(navController: NavController){
                 overflow = TextOverflow.Clip)
                 Divider()
 
+            }}
+
+
+        ReadingRightNowArea(books = listOf(), navController = navController )
+
+        TitleSection(label = "Reading List")
+
+        BookListArea(listOfBooks = listOfBooks, navController = navController)
+
+}}
+
+@Composable
+fun BookListArea(listOfBooks: List<MBook>,
+                 navController: NavController) {
+        HorizontalScrollableComponent(listOfBooks){
+            //todo on card click go to detail
+        }
+}
+
+@Composable
+fun HorizontalScrollableComponent(listOfBooks: List<MBook>, onCardPress: (String)-> Unit) {
+val scrollState = rememberScrollState()
+    Row(modifier = Modifier
+        .fillMaxWidth()
+        .heightIn(280.dp)
+        .horizontalScroll(scrollState)) {
+        for(book in listOfBooks){
+            ListCard(book){
+                onCardPress(it)
             }
         }
-        ListCard()
     }
-}
-
-@Preview
-@Composable
-fun ListCard(book: MBook = MBook("asdf","Running","Me and you", "hello world"),
-onPressDetails: (String) -> Unit={}){
-    val context = LocalContext.current
-    val resources = context.resources
-    val displayMetrics = resources.displayMetrics
-    val screenWidth = displayMetrics.widthPixels / displayMetrics.density
-    val spacing = 10.dp
-    Card(shape = RoundedCornerShape(29.dp),
-    backgroundColor = Color.White,
-    elevation = 6.dp,
-        modifier = Modifier
-            .padding(16.dp)
-            .height(242.dp)
-            .width(202.dp)
-            .clickable { onPressDetails.invoke(book.title.toString()) })
-    {
-        Column(modifier = Modifier.width(screenWidth.dp - (spacing * 2)),
-        horizontalAlignment = Alignment.Start) {
-            Row(horizontalArrangement = Arrangement.Center) {
-                Image(painter = rememberImagePainter(data = "http://books.google.com/books/content?\n" +
-                        "id=JGH0DwAAQBAJ&printsec=frontcover&img=1&zoom=5&edge=curl&source=gbs_api"), contentDescription = "book image",
-                modifier = Modifier
-                    .height(140.dp)
-                    .width(100.dp)
-                    .padding(4.dp))
-                Spacer(modifier = Modifier.width(50.dp))
-                Column(modifier = Modifier.padding(top = 25.dp),
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally) {
-                            Icon(imageVector = Icons.Rounded.FavoriteBorder, contentDescription = "Fav Icon",
-                            modifier = Modifier.padding(bottom = 1.dp))
-
-
-                    BookRating(score = 3.5)
-                }
-            }
-            Text(text = "Book Title", modifier = Modifier.padding(4.dp),
-            fontWeight = FontWeight.Bold,
-            maxLines = 2,
-            overflow = TextOverflow.Ellipsis)
-            Text(text = "Author All...", modifier = Modifier.padding(4.dp),
-            style = MaterialTheme.typography.caption)
-        }
-        Row(horizontalArrangement = Arrangement.End,
-            verticalAlignment = Alignment.Bottom) {
-            RoundedButton(label = "Reading" , radius = 70)
-        }
-    }
-
-}
-@Preview
-@Composable
-fun RoundedButton(
-    label:String = "Reading",
-    radius: Int = 29,
-    onPress: () -> Unit = {}){
-    Surface(modifier = Modifier.clip(RoundedCornerShape(
-        bottomEndPercent = radius,
-        topStartPercent = radius)),
-    color = Color(0xFF92CBDF)) {
-        Column(modifier = Modifier
-            .width(90.dp)
-            .heightIn(40.dp)
-            .clickable { onPress.invoke() },
-        verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-            Text(text = label, style = TextStyle(color = Color.White, fontSize = 15.sp))
-        }
-    }
-}
-
-
-
-
-
-@Composable
-fun BookRating(score: Double = 4.5) {
-Surface(modifier = Modifier
-    .height(70.dp)
-    .padding(4.dp),
-shape = RoundedCornerShape(56.dp),
-elevation = 6.dp,
-color = Color.White
-) {
-        Column(modifier = Modifier.padding(4.dp)) {
-            Icon(imageVector = Icons.Filled.StarBorder, contentDescription = "Star",
-                modifier = Modifier.padding(3.dp))
-            Text(text = score.toString(), style = MaterialTheme.typography.subtitle1)
-        }
-}
 }
 
 
